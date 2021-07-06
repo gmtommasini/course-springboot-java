@@ -2,6 +2,8 @@ package com.gmtommasini.course.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -23,9 +26,10 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT") // formating
-																											// time
-																											// string
+	// formating time string
+	@JsonFormat(shape = JsonFormat.Shape.STRING, 
+				pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", 
+				timezone = "GMT") 
 	private Instant moment;
 
 	private Integer orderStatus;
@@ -33,7 +37,9 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
-
+	
+	@OneToMany(mappedBy = "id.order") // it is the OrderItem id who has the Order: Order is NOT mapped directly to a member attribute
+	private Set<OrderItem> itemSet = new HashSet<>();
 	// *** Constructors ***
 	public Order() {
 	}
@@ -80,6 +86,10 @@ public class Order implements Serializable {
 
 			this.orderStatus = orderStatus.getCode();
 		}
+	}
+	
+	public Set<OrderItem> getItems(){
+		return itemSet;
 	}
 
 	// *** Standard Methods ***
