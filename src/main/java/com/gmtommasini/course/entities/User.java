@@ -1,13 +1,22 @@
 package com.gmtommasini.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity; //Hibernate is the implementation of javax.persistence
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name = "tb_users")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	// *** Attributes ***
@@ -18,6 +27,11 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
+	
+	//Associations
+	@JsonIgnore //will not bring order info with it
+	@OneToMany(mappedBy = "client") //client is the attribute name related to this class  in the Order entity
+	private List<Order> orders = new ArrayList<>();
 
 	// *** Constructors ***
 	public User() {
@@ -72,6 +86,10 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public List<Order> getOrders() {
+		return orders;
+	}
 
 	// *** Standard Methods *** 
 	@Override
@@ -98,6 +116,8 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
+
 	
 	// *** Custom Methods *** 
 
