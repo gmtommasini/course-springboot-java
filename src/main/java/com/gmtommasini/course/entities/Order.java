@@ -133,5 +133,15 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
+	
+	// *** Custom Methods ******************
+		public Double getTotal() { // Java Enterprise "demands" "get" in the name
+			Double sum = 0.0;
+			for (OrderItem oi : itemSet) {
+				sum += oi.getSubTotal();
+			}
+			return sum;
+		}
+		
 
 }

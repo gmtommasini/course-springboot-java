@@ -33,7 +33,7 @@ public class OrderItem implements Serializable {
 	}
 
 	// *** Getters and Setters ************
-	@JsonIgnore  // to prevent the loop when assembling the orderitems
+	@JsonIgnore // to prevent the loop when assembling the orderitems
 	public Order getOrder() {
 		return id.getOrder();
 	}
@@ -66,8 +66,7 @@ public class OrderItem implements Serializable {
 		this.price = price;
 	}
 
-
-	// *** Standard Methods ****************** 
+	// *** Standard Methods ******************
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -93,4 +92,8 @@ public class OrderItem implements Serializable {
 		return true;
 	}
 
+	// *** Custom Methods ******************
+	public Double getSubTotal() { // Java Enterprise "demands" "get" in the name
+		return this.price * quantity;
+	}
 }
