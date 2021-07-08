@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,6 +24,7 @@ import com.gmtommasini.course.entities.enums.OrderStatus;
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	// *** Attributes ***
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,15 +34,19 @@ public class Order implements Serializable {
 				pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", 
 				timezone = "GMT") 
 	private Instant moment;
-
 	private Integer orderStatus;
+	
 
+	// *** Associations ***
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
 	
 	@OneToMany(mappedBy = "id.order") // it is the OrderItem id (OrderItemPK) who has the Order: Order is NOT mapped directly to a member attribute
 	private Set<OrderItem> itemSet = new HashSet<>();
+	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) //Payment id will be the same as Order id
+	private Payment payment;
 	
 	
 	// *** Constructors ***
@@ -92,6 +99,13 @@ public class Order implements Serializable {
 	
 	public Set<OrderItem> getItems(){
 		return itemSet;
+	}
+	
+	public Payment getPayment() {
+		return this.payment;
+	}
+	public void setPayment(Payment pay) {
+		this.payment = pay;
 	}
 
 	// *** Standard Methods ***
