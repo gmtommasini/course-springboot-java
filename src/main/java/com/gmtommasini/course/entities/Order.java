@@ -38,8 +38,10 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_id")
 	private User client;
 	
-	@OneToMany(mappedBy = "id.order") // it is the OrderItem id who has the Order: Order is NOT mapped directly to a member attribute
+	@OneToMany(mappedBy = "id.order") // it is the OrderItem id (OrderItemPK) who has the Order: Order is NOT mapped directly to a member attribute
 	private Set<OrderItem> itemSet = new HashSet<>();
+	
+	
 	// *** Constructors ***
 	public Order() {
 	}

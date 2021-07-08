@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_products")
@@ -34,6 +37,8 @@ public class Product implements Serializable {
 				inverseJoinColumns = @JoinColumn(name="category_id"))
 	private Set<Category> categories = new HashSet<>();
 	
+	@OneToMany(mappedBy = "id.product") // it is the OrderItem id (OrderItemPK) who has the Product: Product is NOT mapped directly to a member attribute
+	private Set<OrderItem> items = new HashSet<>();
 	
 	// *** Constructors *******
 	public Product() {}
@@ -87,7 +92,17 @@ public class Product implements Serializable {
 	public Set<Category> getCategories() {
 		return categories;
 	}
+	
+	@JsonIgnore // Product description does not include the Orders it is included in.
+	public Set<Order> getOrders(){
+		Set<Order> set = new HashSet<>();
+		for (OrderItem oi : this.items ) {
+			set.add( oi.getOrder() );
+		}
+		return set;
+	}
 
+	
 	// *** Standard Methods ****************** 
 	@Override
 	public int hashCode() {
