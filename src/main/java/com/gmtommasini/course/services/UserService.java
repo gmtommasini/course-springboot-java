@@ -21,5 +21,10 @@ public class UserService {
 	public User findById(Long id) {
 		return repository.findById(id).get(); //findById returns an Optional<>, hence the .get()
 	}
+	
+	public User insert(User obj) {
+		return repository.save(obj); //findById returns an Optional<>, hence the .get()
+	}
+	
 
 }
