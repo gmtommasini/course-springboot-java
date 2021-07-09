@@ -19,12 +19,30 @@ public class UserService {
 	}
 	
 	public User findById(Long id) {
-		return repository.findById(id).get(); //findById returns an Optional<>, hence the .get()
+		System.out.println("Find User by ID");
+		User user  = repository.findById(id).get(); //findById returns an Optional<>, hence the .get() 
+		return user; 
 	}
 	
 	public User insert(User obj) {
 		return repository.save(obj); //findById returns an Optional<>, hence the .get()
 	}
 	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public User update(Long id, User obj) {
+		User entity = repository.getById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone() );
+		
+	}
 
 }
