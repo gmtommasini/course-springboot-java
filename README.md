@@ -5,7 +5,7 @@ Heroku app:
 https://gmt-course-spring-boot.herokuapp.com/
 
 routes:
-/categories
-/orders
-/products
-/users
+- /categories
+- /orders
+- /products
+- /users
