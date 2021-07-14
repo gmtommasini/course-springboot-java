@@ -8,5 +8,4 @@ import com.gmtommasini.course.entities.User;
 //@Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	//SprindDataJPA has a default implementation for JpaRepository interface
-
 }

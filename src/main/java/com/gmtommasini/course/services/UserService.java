@@ -52,13 +52,13 @@ public class UserService {
 	public User update(Long id, User obj) {
 		try {
 			User entity = repository.getById(id);
-			updateData(entity, obj);
-
+			updateData(entity, obj); // internal method defined below
 			return repository.save(entity);
-		}catch (EntityNotFoundException e) {
+
+		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
-		} 
-		catch (RuntimeException e) {
+
+		} catch (RuntimeException e) {
 			e.printStackTrace();
 			throw e;
 		}
